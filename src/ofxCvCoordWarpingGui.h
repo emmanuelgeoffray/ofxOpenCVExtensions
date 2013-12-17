@@ -29,7 +29,7 @@
 #define _GUI_QUAD_
 
 #include "ofMain.h"
-#include "ofxOpenCv.h"
+//#include "ofxOpenCv.h"
 #include "ofxXmlSettings.h"
 #include "ofxMSAInteractiveObject.h"
 
@@ -77,6 +77,7 @@ public:
 	//added scaling
 	void setScale( float scaleX, float scaleY );
 	ofPoint scale;
+  ofPoint getWarpedPoint( ofVec2f input );
 	
 	// ZACK BOKA: Keep track of current OpenTSPS view so that image warping only occurs when in camera view.
 	bool bCameraView;

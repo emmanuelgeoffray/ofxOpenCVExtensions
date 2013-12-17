@@ -258,6 +258,8 @@ void ofxCvCoordWarpingGui::saveToFile(string filePath){
 
 //----------------------------------------------------
 void ofxCvCoordWarpingGui::draw(float passedX, float passedY, float scaleWidth, float scaleHeight, int red, int green, int blue, int thickness){
+  if (!bCameraView) 
+    return;
 	
 	getScaledQuadPoints(scaleWidth, scaleHeight);
 	ofPushMatrix();
@@ -364,3 +366,32 @@ void ofxCvCoordWarpingGui::setScale( float scaleX, float scaleY ){
 	scale.y = scaleY;
 };
 
+//----------------------------------------------------
+ofPoint ofxCvCoordWarpingGui::getWarpedPoint( ofVec2f input ){
+
+
+    int inW, inH;
+    inW = ofGetWidth();
+    inH = ofGetHeight();
+    ofPoint * quad = getScaledQuadPoints(inW,inH);
+    
+    
+    int xinput =0;
+    int yinput = 0;
+    
+    float xlrp = 0.0;
+    float ylrp = 0.0;
+    
+    ofPoint p1, p2, p3, p4;
+    p1 = quad[0];
+    p2 = quad[1];
+    p3 = quad[2];
+    p4 = quad[3];
+    
+    xlrp = input.x/(float)inW;
+    ylrp = input.y/(float)inH;
+    xinput = (p1.x*(1-xlrp)+p2.x*xlrp)*(1-ylrp) + (p4.x*(1-xlrp)+p3.x*xlrp)*ylrp;
+    yinput = ((p1.y*(1-ylrp))+(p4.y*ylrp))*(1-xlrp) + (p2.y*(1-ylrp)+p3.y*ylrp)*xlrp;
+
+   return ofVec2f(xinput, yinput);
+}
